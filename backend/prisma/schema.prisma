@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+enum Role {
+  ADMIN
+  STUDENT
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  role         Role
+  student      Student?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Student {
+  id         String    @id @default(cuid())
+  firstName  String
+  lastName   String
+  email      String    @unique
+  userId     String    @unique
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  grades     Grade[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Subject {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  code        String    @unique
+  description String?
+  grades      Grade[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Grade {
+  id          String    @id @default(cuid())
+  value       Int
+  comment     String?
+  studentId   String
+  subjectId   String
+  student     Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject     Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([studentId, subjectId])
+}
