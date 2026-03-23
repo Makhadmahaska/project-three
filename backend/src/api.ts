@@ -1,10 +1,9 @@
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
-import { gradeRouter } from "./routes/grade-route";
-import { studentRouter } from "./routes/student-route";
-import { subjectRouter } from "./routes/subject-route";
-import { HttpError } from "./utils/http-error";
+import { gradeRouter } from "./routes/grade-route.js";
+import { studentRouter } from "./routes/student-route.js";
+import { subjectRouter } from "./routes/subject-route.js";
 
 export const app = express();
 
