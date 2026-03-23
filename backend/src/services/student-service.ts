@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { prisma } from "../lib/prisma";
-import { HttpError } from "../utils/http-error";
+
 import { Role } from "@prisma/client";
 
 type CreateStudentInput = {

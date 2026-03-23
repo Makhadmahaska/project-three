@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { z } from "zod";
-import { AuthenticatedRequest } from "../middleware/auth";
-import { createSubject, listSubjects, updateSubject } from "../services/subject-service";
+import { AuthenticatedRequest } from "../middleware/auth.js";
+import { createSubject, listSubjects, updateSubject } from "../services/subject-service.js";
 
 const createSubjectSchema = z.object({
   name: z.string().trim().min(1),

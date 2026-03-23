@@ -1,12 +1,12 @@
 import { Response } from "express";
 import { z } from "zod";
-import { AuthenticatedRequest } from "../middleware/auth";
+import { AuthenticatedRequest } from "../middleware/auth.js";
 import {
   createStudent,
   getStudentGrades,
   listStudents,
   updateStudent
-} from "../services/student-service";
+} from "../services/student-service.js";
 
 const createStudentSchema = z.object({
   firstName: z.string().trim().min(1),

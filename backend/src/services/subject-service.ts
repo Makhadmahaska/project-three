@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma";
-import { HttpError } from "../utils/http-error";
+
 
 type SubjectInput = {
   name: string;
@@ -31,7 +31,7 @@ export async function updateSubject(subjectId: string, input: UpdateSubjectInput
   });
 
   if (!existingSubject) {
-    throw new HttpError(404, "Subject not found");
+    throw new (404, "Subject not found");
   }
 
   return prisma.subject.update({

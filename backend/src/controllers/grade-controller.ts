@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { z } from "zod";
-import { AuthenticatedRequest } from "../middleware/auth";
-import { listGrades, upsertGrade } from "../services/grade-service";
+import { AuthenticatedRequest } from "../middleware/auth.js";
+import { listGrades, upsertGrade } from "../services/grade-service.js";
 
 const upsertGradeSchema = z.object({
   studentId: z.string().cuid(),
