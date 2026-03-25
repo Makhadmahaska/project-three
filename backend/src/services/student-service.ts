@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/db.js";
 
 import { Role } from "@prisma/client";
 

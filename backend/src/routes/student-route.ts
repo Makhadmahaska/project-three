@@ -6,9 +6,9 @@ import {
   getStudentGradesController,
   listStudentsController,
   updateStudentController
-} from "../controllers/student-controller";
-import { requireAuth, requireRole } from "../middleware/auth";
-import { asyncHandler } from "../utils/async-handler";
+} from "../controllers/student-controller.js";
+import { requireAuth, requireRole } from "../middleware/auth.js";
+
 
 export const studentRouter = Router();
 
@@ -16,20 +16,20 @@ studentRouter.get(
   "/me/grades",
   requireAuth,
   requireRole(Role.STUDENT),
-  asyncHandler(getOwnGradesController)
+  (getOwnGradesController)
 );
 
-studentRouter.get("/", requireAuth, requireRole(Role.ADMIN), asyncHandler(listStudentsController));
-studentRouter.post("/", requireAuth, requireRole(Role.ADMIN), asyncHandler(createStudentController));
+studentRouter.get("/", requireAuth, requireRole(Role.ADMIN), (listStudentsController));
+studentRouter.post("/", requireAuth, requireRole(Role.ADMIN), (createStudentController));
 studentRouter.put(
   "/:studentId",
   requireAuth,
   requireRole(Role.ADMIN),
-  asyncHandler(updateStudentController)
+  (updateStudentController)
 );
 studentRouter.get(
   "/:studentId/grades",
   requireAuth,
   requireRole(Role.ADMIN),
-  asyncHandler(getStudentGradesController)
+  (getStudentGradesController)
 );

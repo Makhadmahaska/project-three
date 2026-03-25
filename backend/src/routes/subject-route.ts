@@ -4,17 +4,17 @@ import {
   createSubjectController,
   listSubjectsController,
   updateSubjectController
-} from "../controllers/subject-controller";
-import { requireAuth, requireRole } from "../middleware/auth";
-import { asyncHandler } from "../utils/async-handler";
+} from "../controllers/subject-controller.js";
+import { requireAuth, requireRole } from "../middleware/auth.js";
+
 
 export const subjectRouter = Router();
 
-subjectRouter.get("/", requireAuth, asyncHandler(listSubjectsController));
-subjectRouter.post("/", requireAuth, requireRole(Role.ADMIN), asyncHandler(createSubjectController));
+subjectRouter.get("/", requireAuth, (listSubjectsController));
+subjectRouter.post("/", requireAuth, requireRole(Role.ADMIN), (createSubjectController));
 subjectRouter.put(
   "/:subjectId",
   requireAuth,
   requireRole(Role.ADMIN),
-  asyncHandler(updateSubjectController)
+  (updateSubjectController)
 );

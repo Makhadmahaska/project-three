@@ -1,6 +1,6 @@
-import { Response } from "express";
+import type { Response } from "express";
 import { z } from "zod";
-import { AuthenticatedRequest } from "../middleware/auth.js";
+import type{ AuthenticatedRequest } from "../middleware/auth.js";
 import { listGrades, upsertGrade } from "../services/grade-service.js";
 
 const upsertGradeSchema = z.object({
