@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
-import { prisma } from "../lib/db.js";
-
-import { Role } from "@prisma/client";
+import prisma from "../../lib/db.js";
+import { Role } from "../../generated/prisma/client.js";
 
 type CreateStudentInput = {
   firstName: string;
