@@ -1,12 +1,22 @@
-
 import { useEffect, useState } from "react";
 import { getGrades } from "../services/api";
 import GradesTable from "../components/GradesTable";
 import YearFilter from "../components/YearFilter";
 import Navbar from "../components/Navbar";
 
-export default function StudentDashboard({ user }: any) {
-  const [grades, setGrades] = useState<any[]>([]);
+type StudentDashboardProps = {
+  user: {
+    name: string;
+  };
+};
+
+type GradeRow = {
+  id: string;
+  year?: number;
+};
+
+export default function StudentDashboard({ user }: StudentDashboardProps) {
+  const [grades, setGrades] = useState<GradeRow[]>([]);
   const [year, setYear] = useState(0);
 
   useEffect(() => {
@@ -17,15 +27,21 @@ export default function StudentDashboard({ user }: any) {
 
   return (
     <div className="dashboard">
-      <Navbar />
+      <Navbar title="Student Dashboard" subtitle="Grades" />
 
       <div className="content">
-        <h1>Grades</h1>
-        <p className="student-name">{user.name}</p>
+        <div className="content-panel">
+          <div className="section-header">
+            <div>
+              <h1>Grades</h1>
+              <p className="student-name">{user.name}</p>
+            </div>
+          </div>
 
-        <YearFilter setYear={setYear} />
+          <YearFilter setYear={setYear} />
 
-        <GradesTable grades={filtered} />
+          <GradesTable grades={filtered} />
+        </div>
       </div>
     </div>
   );

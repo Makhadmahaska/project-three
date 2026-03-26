@@ -1,20 +1,273 @@
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f7f7f2;
+  color: #111;
+  font-family: "Chalkboard SE", "Comic Sans MS", "Marker Felt", cursive;
+}
+
+button,
+input,
+a {
+  font: inherit;
+}
+
+.wireframe-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  border: 3px solid #111;
+  margin: 14px;
+  background: #fbfbf8;
+}
+
+.browser-frame {
+  border-bottom: 3px solid #111;
+  background: #d3d3d3;
+}
+
+.browser-tab-title {
+  text-align: center;
+  padding: 4px 12px 2px;
+  font-size: 1.6rem;
+}
+
+.browser-toolbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 10px 14px 18px;
+}
+
+.browser-actions {
+  display: flex;
+  gap: 12px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.browser-address {
+  border: 3px solid #111;
+  border-radius: 8px;
+  background: #fff;
+  padding: 6px 14px;
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.1rem;
+}
+
+.browser-search {
+  min-width: 64px;
+  padding: 4px 16px;
+  border: 3px solid #111;
+  border-radius: 999px;
+  background: #fff;
+  text-align: center;
+  font-weight: 700;
+}
+
+.login-stage {
+  display: grid;
+  place-items: center;
+  padding: 48px 24px;
+}
+
+.login-panel {
+  width: min(620px, 100%);
+}
+
+.login-panel h1 {
+  margin: 0 0 18px;
+  font-size: clamp(2.4rem, 4vw, 3.3rem);
+}
+
+.login-form {
+  background: #e7e7e7;
+  border: 3px solid #a9a9a9;
+  padding: 56px 56px 64px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+  font-size: 1.25rem;
+}
+
+.field-row input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 3px solid #111;
+  border-radius: 4px;
+  background: #fff;
+  box-sizing: border-box;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.remember-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 20px 138px;
+  font-size: 1.1rem;
+}
+
+.remember-row input {
+  width: 18px;
+  height: 18px;
+}
+
+.login-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-left: 138px;
+}
+
+.login-actions button {
+  min-width: 104px;
+  padding: 8px 18px;
+  border: 3px solid #111;
+  background: #fff;
+  box-shadow: 4px 4px 0 #111;
+  cursor: pointer;
+}
+
+.login-actions a {
+  color: #0f4aa3;
+  text-underline-offset: 3px;
+}
+
+.wireframe-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 16px 14px;
+  border-top: 3px solid #111;
+  background: #d3d3d3;
+  font-size: 1.8rem;
+}
+
+@media (max-width: 760px) {
+  .wireframe-shell {
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  .browser-toolbar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .browser-actions {
+    font-size: 1.6rem;
+  }
+
+  .login-form {
+    padding: 28px 20px 36px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .remember-row,
+  .login-actions {
+    margin-left: 0;
+  }
+
+  .login-actions {
+    flex-wrap: wrap;
+  }
+}
+
 /* =======================================
    Global / Dashboard Styles
    ======================================= */
 
 .dashboard {
-  background: #1e40af;
-  color: white;
-  padding: 15px 30px;
+  min-height: 100vh;
+  background: #fbfbf8;
+  color: #111;
+  padding: 24px;
+}
+
+.navbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  border: 3px solid #111;
+  background: #e4e4e4;
+  margin-bottom: 18px;
+}
+
+.navbar h2 {
+  margin: 4px 0 0;
+  font-size: 2rem;
+}
+
+.navbar-kicker {
+  margin: 0;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.navbar-badge {
+  border: 3px solid #111;
+  background: #fff;
+  padding: 8px 14px;
+  min-width: 110px;
+  text-align: center;
 }
 
 .dashboard .content {
-  padding: 40px;
+  padding: 0;
+}
+
+.content-panel,
+.card-panel {
+  border: 3px solid #111;
+  background: #efefef;
+  padding: 26px;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.section-header.compact {
+  margin-bottom: 18px;
+}
+
+.section-header h1,
+.section-header h2 {
+  margin: 0;
+}
+
+.section-copy {
+  margin: 10px 0 0;
+  color: #444;
+  font-family: "Trebuchet MS", sans-serif;
 }
 
 .student-name {
-  color: gray;
-  margin-bottom: 20px;
+  color: #444;
+  margin: 10px 0 0;
+  font-family: "Trebuchet MS", sans-serif;
 }
 
 /* =======================================
@@ -23,11 +276,13 @@
 
 .filters button {
   margin-right: 10px;
+  margin-bottom: 12px;
   padding: 10px 16px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 3px solid #111;
+  border-radius: 0;
   background: white;
   cursor: pointer;
+  box-shadow: 3px 3px 0 #111;
 }
 
 /* =======================================
@@ -35,16 +290,20 @@
    ======================================= */
 
 .admin-menu {
-  padding: 20px;
+  padding: 8px 0 20px;
 }
 
 .admin-menu button {
   margin-right: 15px;
   padding: 10px 15px;
-  border-radius: 8px;
-  border: none;
-  background: #1e40af;
-  color: white;
+  border: 3px solid #111;
+  background: #fff;
+  color: #111;
+  box-shadow: 3px 3px 0 #111;
+}
+
+.admin-menu button.active {
+  background: #d9d9d9;
 }
 
 /* =======================================
@@ -52,14 +311,42 @@
    ======================================= */
 
 .form {
-  padding: 40px;
+  padding: 0;
+}
+
+.stack-fields {
+  display: grid;
+  gap: 14px;
+}
+
+.line-field {
+  display: grid;
+  gap: 8px;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.line-field span {
+  font-weight: 600;
 }
 
 .form input {
   display: block;
-  width: 300px;
-  padding: 10px;
-  margin-bottom: 15px;
+  width: 100%;
+  max-width: 520px;
+  padding: 10px 12px;
+  margin-bottom: 0;
+  border: 3px solid #111;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.primary-button {
+  margin-top: 20px;
+  padding: 10px 18px;
+  border: 3px solid #111;
+  background: #fff;
+  box-shadow: 3px 3px 0 #111;
+  cursor: pointer;
 }
 
 /* =======================================
@@ -71,15 +358,49 @@
   border-collapse: collapse;
   margin-top: 20px;
   background: white;
+  border: 3px solid #111;
 }
 
 .grades-table th,
 .grades-table td {
   padding: 12px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 2px solid #d8d8d8;
   text-align: left;
+  color: #111;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.grades-table th {
+  background: #d9d9d9;
+  border-bottom: 3px solid #111;
 }
 
 .grade {
   font-weight: bold;
+}
+
+@media (max-width: 760px) {
+  .dashboard {
+    padding: 14px;
+  }
+
+  .navbar,
+  .content-panel,
+  .card-panel {
+    padding: 18px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .section-header {
+    flex-direction: column;
+  }
+
+  .grades-table {
+    display: block;
+    overflow-x: auto;
+  }
 }

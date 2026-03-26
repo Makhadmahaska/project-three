@@ -1,5 +1,17 @@
+type GradeRow = {
+  id: string;
+  course?: string;
+  subject?: string | { name?: string };
+  grade?: string;
+  value?: number;
+  year?: number;
+};
 
-export default function GradesTable({ grades }: any) {
+type GradesTableProps = {
+  grades: GradeRow[];
+};
+
+export default function GradesTable({ grades }: GradesTableProps) {
   return (
     <table className="grades-table">
       <thead>
@@ -11,12 +23,12 @@ export default function GradesTable({ grades }: any) {
         </tr>
       </thead>
       <tbody>
-        {grades.map((g: any) => (
+        {grades.map((g) => (
           <tr key={g.id}>
-            <td>{g.course}</td>
-            <td>{g.subject}</td>
-            <td className="grade">{g.grade}</td>
-            <td>{g.year}</td>
+            <td>{g.course ?? "Course"}</td>
+            <td>{typeof g.subject === "string" ? g.subject : g.subject?.name ?? "Subject"}</td>
+            <td className="grade">{g.grade ?? g.value ?? "-"}</td>
+            <td>{g.year ?? "-"}</td>
           </tr>
         ))}
       </tbody>

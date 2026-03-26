@@ -1,17 +1,31 @@
-
 import { useEffect, useState } from "react";
 import { getStudents } from "../services/api";
 
+type StudentRow = {
+  id: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  firstName?: string;
+  lastName?: string;
+};
+
 export default function StudentAccounts() {
-  const [students, setStudents] = useState<any[]>([]);
+  const [students, setStudents] = useState<StudentRow[]>([]);
 
   useEffect(() => {
     getStudents().then(setStudents);
   }, []);
 
   return (
-    <div className="table-container">
-      <h2>Student Accounts</h2>
+    <div className="table-container card-panel">
+      <div className="section-header compact">
+        <div>
+          <h2>Student Accounts</h2>
+          <p className="section-copy">Overview of the current student records.</p>
+        </div>
+      </div>
 
       <table className="grades-table">
         <thead>
@@ -26,10 +40,10 @@ export default function StudentAccounts() {
         <tbody>
           {students.map((s) => (
             <tr key={s.id}>
-              <td>{s.name}</td>
-              <td>{s.email}</td>
-              <td>{s.phone}</td>
-              <td>{s.address}</td>
+              <td>{s.name ?? (`${s.firstName ?? ""} ${s.lastName ?? ""}`.trim() || "Student")}</td>
+              <td>{s.email ?? "-"}</td>
+              <td>{s.phone ?? "-"}</td>
+              <td>{s.address ?? "-"}</td>
             </tr>
           ))}
         </tbody>

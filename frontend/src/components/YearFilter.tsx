@@ -1,5 +1,9 @@
 
-export default function YearFilter({ setYear }: any) {
+type YearFilterProps = {
+  setYear: (year: number) => void;
+};
+
+export default function YearFilter({ setYear }: YearFilterProps) {
   return (
     <div className="filters">
       <button onClick={() => setYear(1)}>Year 1</button>
