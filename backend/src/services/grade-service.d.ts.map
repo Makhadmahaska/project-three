@@ -1,0 +1,1 @@
+{"version":3,"file":"grade-service.d.ts","sourceRoot":"","sources":["grade-service.ts"],"names":[],"mappings":"AACA,KAAK,gBAAgB,GAAG;IACtB,SAAS,EAAE,MAAM,CAAC;IAClB,SAAS,EAAE,MAAM,CAAC;IAClB,KAAK,EAAE,MAAM,CAAC;IACd,OAAO,CAAC,EAAE,MAAM,GAAG,SAAS,CAAC;CAC9B,CAAC;AAEF,wBAAsB,UAAU;;;;;;;;;;;;;;;;;;;;;;;;;;MAU/B;AAED,wBAAsB,WAAW,CAAC,KAAK,EAAE,gBAAgB;;;;;;;;;;;;;;;;;;;;;;;;;;GAuBxD"}

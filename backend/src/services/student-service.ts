@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import prisma from "../../lib/db.js";
 import { Role } from "../../generated/prisma/client.js";
+import { HttpError } from "../middleware/http-error.js";
 
 type CreateStudentInput = {
   firstName: string;
@@ -9,7 +10,12 @@ type CreateStudentInput = {
   password: string;
 };
 
-type UpdateStudentInput = Partial<CreateStudentInput>;
+type UpdateStudentInput = {
+  firstName?: string | undefined;
+  lastName?: string | undefined;
+  email?: string | undefined;
+  password?: string | undefined;
+};
 
 export async function listStudents() {
   return prisma.student.findMany({
@@ -81,8 +87,8 @@ export async function updateStudent(studentId: string, input: UpdateStudentInput
   return prisma.student.update({
     where: { id: studentId },
     data: {
-      firstName: input.firstName,
-      lastName: input.lastName,
+      firstName: input.firstName ?? existingStudent.firstName,
+      lastName: input.lastName ?? existingStudent.lastName,
       email: nextEmail,
       user: {
         update: {

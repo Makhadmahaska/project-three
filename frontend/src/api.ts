@@ -1,4 +1,4 @@
-export const API = "http://localhost:5000/api";
+export const API = "http://localhost:3001/api";
 
 export type UserRole = "ADMIN" | "STUDENT";
 
@@ -15,7 +15,7 @@ export type AuthResponse = {
   user: AuthUser;
 };
 
-export const loginUser = async (email: string, password: string) => {
+export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
   const res = await fetch(`${API}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

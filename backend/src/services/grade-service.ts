@@ -3,7 +3,7 @@ type UpsertGradeInput = {
   studentId: string;
   subjectId: string;
   value: number;
-  comment?: string;
+  comment?: string | undefined;
 };
 
 export async function listGrades() {
