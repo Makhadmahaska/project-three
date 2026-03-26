@@ -1,14 +1,13 @@
-mport { useState } from "react";
-import Login from "./components/Login";
-import StudentDashboard from "./pages/StudentDashboard";
+import { useState } from "react";
+
+import StudentDashboard from "./pages/StudentDashbaord";
 import AdminDashboard from "./pages/AdminDashboard";
+import type { AuthResponse } from "./services/api";
 
 export default function App() {
-  const [user, setUser] = useState<any>(null);
+  const [session, setSession] = useState<AuthResponse | null>(null);
 
-  if (!user) return <Login onLogin={setUser} />;
-
-  if (user.role === "admin") return <AdminDashboard />;
-
-  return <StudentDashboard user={user} />;
+  if (!session) return <Login onLogin={setSession} />;
+  if (session.user.role === "ADMIN") return <AdminDashboard token={session.token} />;
+  return <StudentDashboard token={session.token} user={session.user} />;
 }

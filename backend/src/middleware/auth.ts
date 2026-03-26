@@ -1,19 +1,19 @@
-import type{ NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { Role } from "@prisma/client";
+import type { Role } from "@prisma/client";
 
 export type AuthenticatedRequest = Request & {
   auth?: {
     userId: string;
     role: Role;
-    studentId?: string;
+    studentId?: string | undefined;
   };
 };
 
 type AuthTokenPayload = {
   sub: string;
   role: Role;
-  studentId?: string;
+  studentId?: string | undefined;
 };
 
 export function requireAuth(
@@ -36,11 +36,16 @@ export function requireAuth(
 
   try {
     const decoded = jwt.verify(token, jwtSecret) as AuthTokenPayload;
-    request.auth = {
-      userId: decoded.sub,
-      role: decoded.role,
-      studentId: decoded.studentId
-    };
+    request.auth = decoded.studentId
+      ? {
+          userId: decoded.sub,
+          role: decoded.role,
+          studentId: decoded.studentId
+        }
+      : {
+          userId: decoded.sub,
+          role: decoded.role
+        };
 
     return next();
   } catch {

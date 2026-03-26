@@ -5,7 +5,7 @@
   "main": "dist/src/server.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "nodemon --watch src --ext ts --exec \"tsx src/server.ts\"",
+    "dev": "nodemon --watch src --ext ts --exec \"tsx src/service.ts\"",
     "prisma:generate": "prisma generate",
     "start": "node dist/src/server.js",
     "test": "echo \"No backend tests configured yet\""

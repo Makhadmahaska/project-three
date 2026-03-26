@@ -3,9 +3,11 @@ import express from "express";
 import type { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 
+import { loginController } from "./controllers/auth-controller.js";
 import { gradeRouter } from "./routes/grade-route.js";
 import { studentRouter } from "./routes/student-route.js";
 import { subjectRouter } from "./routes/subject-route.js";
+import { HttpError } from "./middleware/http-error.js";
 
 export const app = express();
 
@@ -16,9 +18,10 @@ app.get("/health", (_request, response) => {
   response.json({ ok: true });
 });
 
-app.use("/subjects", subjectRouter);
-app.use("/students", studentRouter);
-app.use("/grades", gradeRouter);
+app.post("/api/login", loginController);
+app.use("/api/subjects", subjectRouter);
+app.use("/api/students", studentRouter);
+app.use("/api/grades", gradeRouter);
 
 app.use((_request, response) => {
   response.status(404).json({ message: "Route not found" });
