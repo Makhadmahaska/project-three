@@ -1,1 +1,0 @@
-{"version":3,"file":"grade-controller.d.ts","sourceRoot":"","sources":["grade-controller.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAExC,OAAO,KAAI,EAAE,oBAAoB,EAAE,MAAM,uBAAuB,CAAC;AAUjE,wBAAsB,oBAAoB,CAAC,QAAQ,EAAE,oBAAoB,EAAE,QAAQ,EAAE,QAAQ,+CAG5F;AAED,wBAAsB,qBAAqB,CACzC,OAAO,EAAE,oBAAoB,EAC7B,QAAQ,EAAE,QAAQ,+CAKnB"}
