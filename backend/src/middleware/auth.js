@@ -1,5 +1,40 @@
 import jwt from "jsonwebtoken";
-export function requireAuth(request, response, next) {
+import { createRemoteJWKSet, jwtVerify } from "jose";
+import prisma from "../../lib/db.js";
+const firebaseProjectId = process.env.FIREBASE_PROJECT_ID ?? "project-three-99cba";
+const firebaseIssuer = `https://securetoken.google.com/${firebaseProjectId}`;
+const firebaseJWKS = createRemoteJWKSet(new URL("https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"));
+async function verifyFirebaseToken(token) {
+    const { payload } = await jwtVerify(token, firebaseJWKS, {
+        issuer: firebaseIssuer,
+        audience: firebaseProjectId
+    });
+    return payload;
+}
+async function buildFirebaseAuth(payload) {
+    const email = typeof payload.email === "string" ? payload.email : undefined;
+    if (!payload.sub || !email) {
+        throw new Error("Firebase token is missing required claims");
+    }
+    const user = await prisma.user.findUnique({
+        where: { email },
+        include: { student: true }
+    });
+    if (!user) {
+        throw new Error("No application account found for this Firebase user");
+    }
+    return user.student
+        ? {
+            userId: user.id,
+            role: user.role,
+            studentId: user.student.id
+        }
+        : {
+            userId: user.id,
+            role: user.role
+        };
+}
+export async function requireAuth(request, response, next) {
     const authorizationHeader = request.headers.authorization;
     if (!authorizationHeader?.startsWith("Bearer ")) {
         return response.status(401).json({ message: "Authentication required" });
@@ -24,7 +59,18 @@ export function requireAuth(request, response, next) {
         return next();
     }
     catch {
-        return response.status(401).json({ message: "Invalid or expired token" });
+        try {
+            const firebasePayload = await verifyFirebaseToken(token);
+            request.auth = await buildFirebaseAuth(firebasePayload);
+            return next();
+        }
+        catch (firebaseError) {
+            const message = firebaseError instanceof Error &&
+                firebaseError.message === "No application account found for this Firebase user"
+                ? firebaseError.message
+                : "Invalid or expired token";
+            return response.status(message === "Invalid or expired token" ? 401 : 403).json({ message });
+        }
     }
 }
 export function requireRole(...roles) {

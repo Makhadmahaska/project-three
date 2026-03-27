@@ -1,8 +1,9 @@
 import cors from "cors";
 import express from "express";
 import { ZodError } from "zod";
-import { loginController } from "./controllers/auth-controller.js";
+import { getSessionController, loginController } from "./controllers/auth-controller.js";
 import { gradeRouter } from "./routes/grade-route.js";
+import { requireAuth } from "./middleware/auth.js";
 import { studentRouter } from "./routes/student-route.js";
 import { subjectRouter } from "./routes/subject-route.js";
 import { HttpError } from "./middleware/http-error.js";
@@ -13,6 +14,7 @@ app.get("/health", (_request, response) => {
     response.json({ ok: true });
 });
 app.post("/api/login", loginController);
+app.get("/api/session", requireAuth, getSessionController);
 app.use("/api/subjects", subjectRouter);
 app.use("/api/students", studentRouter);
 app.use("/api/grades", gradeRouter);

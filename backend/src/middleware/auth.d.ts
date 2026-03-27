@@ -7,6 +7,6 @@ export type AuthenticatedRequest = Request & {
         studentId?: string | undefined;
     };
 };
-export declare function requireAuth(request: AuthenticatedRequest, response: Response, next: NextFunction): void | Response<any, Record<string, any>>;
+export declare function requireAuth(request: AuthenticatedRequest, response: Response, next: NextFunction): Promise<void | Response<any, Record<string, any>>>;
 export declare function requireRole(...roles: Role[]): (request: AuthenticatedRequest, response: Response, next: NextFunction) => void | Response<any, Record<string, any>>;
 //# sourceMappingURL=auth.d.ts.map

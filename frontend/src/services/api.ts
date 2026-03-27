@@ -44,16 +44,14 @@ const authHeaders = (token: string) => ({
   Authorization: `Bearer ${token}`
 });
 
-export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
-  const res = await fetch(`${API}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+export const getSession = async (token: string): Promise<AuthResponse> => {
+  const res = await fetch(`${API}/session`, {
+    headers: authHeaders(token)
   });
 
   if (!res.ok) {
-    const errorData = await res.json().catch(() => ({ message: "Login failed" }));
-    throw new Error(errorData.message ?? "Login failed");
+    const errorData = await res.json().catch(() => ({ message: "Failed to load session" }));
+    throw new Error(errorData.message ?? "Failed to load session");
   }
 
   return res.json();
