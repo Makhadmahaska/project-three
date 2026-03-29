@@ -1,5 +1,4 @@
 import type { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import { createRemoteJWKSet, jwtVerify, type JWTPayload } from "jose";
 import type { Role } from "../../generated/prisma/client.js";
 import prisma from "../../lib/db.js";
@@ -10,12 +9,6 @@ export type AuthenticatedRequest = Request & {
     role: Role;
     studentId?: string | undefined;
   };
-};
-
-type AuthTokenPayload = {
-  sub: string;
-  role: Role;
-  studentId?: string | undefined;
 };
 
 const firebaseProjectId = process.env.FIREBASE_PROJECT_ID ?? "project-three-99cba";
@@ -73,40 +66,19 @@ export async function requireAuth(
   }
 
   const token = authorizationHeader.slice("Bearer ".length);
-  const jwtSecret = process.env.JWT_SECRET;
-
-  if (!jwtSecret) {
-    return response.status(500).json({ message: "JWT_SECRET is not configured" });
-  }
 
   try {
-    const decoded = jwt.verify(token, jwtSecret) as AuthTokenPayload;
-    request.auth = decoded.studentId
-      ? {
-          userId: decoded.sub,
-          role: decoded.role,
-          studentId: decoded.studentId
-        }
-      : {
-          userId: decoded.sub,
-          role: decoded.role
-        };
-
+    const firebasePayload = await verifyFirebaseToken(token);
+    request.auth = await buildFirebaseAuth(firebasePayload);
     return next();
-  } catch {
-    try {
-      const firebasePayload = await verifyFirebaseToken(token);
-      request.auth = await buildFirebaseAuth(firebasePayload);
-      return next();
-    } catch (firebaseError) {
-      const message =
-        firebaseError instanceof Error &&
-        firebaseError.message === "No application account found for this Firebase user"
-          ? firebaseError.message
-          : "Invalid or expired token";
+  } catch (firebaseError) {
+    const message =
+      firebaseError instanceof Error &&
+      firebaseError.message === "No application account found for this Firebase user"
+        ? firebaseError.message
+        : "Invalid or expired token";
 
-      return response.status(message === "Invalid or expired token" ? 401 : 403).json({ message });
-    }
+    return response.status(message === "Invalid or expired token" ? 401 : 403).json({ message });
   }
 }
 

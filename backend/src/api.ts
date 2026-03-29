@@ -3,7 +3,7 @@ import express from "express";
 import type { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 
-import { getSessionController, loginController } from "./controllers/auth-controller.js";
+import { getSessionController } from "./controllers/auth-controller.js";
 import { gradeRouter } from "./routes/grade-route.js";
 import { requireAuth } from "./middleware/auth.js";
 import { studentRouter } from "./routes/student-route.js";
@@ -19,7 +19,6 @@ app.get("/health", (_request, response) => {
   response.json({ ok: true });
 });
 
-app.post("/api/login", loginController);
 app.get("/api/session", requireAuth, getSessionController);
 app.use("/api/subjects", subjectRouter);
 app.use("/api/students", studentRouter);
