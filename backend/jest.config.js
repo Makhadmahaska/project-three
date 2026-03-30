@@ -1,21 +1,14 @@
-import  { Config } from "@jest/types";
-
-const config = {
+export default {
   preset: "ts-jest/presets/default-esm",
-
   testEnvironment: "node",
-
   testMatch: ["<rootDir>/tests/**/*.test.ts"],
-
-  clearMocks: true,
-  restoreMocks: true,
-  resetMocks: true,
-
   extensionsToTreatAsEsm: [".ts"],
-
+  transform: {
+    "^.+\\.ts$": ["ts-jest", { useESM: true }]
+  },
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1"
-  }
+  },
+  clearMocks: true,
+  restoreMocks: true
 };
-
-export default config;

@@ -1,43 +1,38 @@
 import express from "express";
 import request from "supertest";
-import { beforeEach, describe, expect, jest, test } from "@jest/globals";
-import { Role } from "../generated/prisma/client.js";
+import { beforeAll, beforeEach, describe, expect, jest, test } from "@jest/globals";
+import type { Role } from "../generated/prisma/client.js";
+import type { AuthenticatedRequest } from "../src/middleware/auth.js";
 
-/* =============================
-   Mock jose module
-   ============================= */
 const mockCreateRemoteJWKSet = jest.fn(() => ({}));
-
-type MockJwtPayload = {
-  sub: string;
-  email: string;
-  role?: Role;
-  studentId?: string | null;
-};
-
-const mockJwtVerify = jest.fn() as jest.MockedFunction<
-  (token: string) => Promise<{ payload: MockJwtPayload }>
->;
+const mockJwtVerify = jest.fn() as jest.Mock<any>;
 
 jest.unstable_mockModule("jose", () => ({
   createRemoteJWKSet: mockCreateRemoteJWKSet,
   jwtVerify: mockJwtVerify
 }));
 
-/* =============================
-   Prisma imports
-   ============================= */
-const prismaModule = await import("../lib/db.js");
-const prisma = prismaModule.default;
+let prisma: any;
+let PrismaRole: typeof import("../generated/prisma/client.js").Role;
+let requireAuth: typeof import("../src/middleware/auth.js").requireAuth;
+let requireRole: typeof import("../src/middleware/auth.js").requireRole;
 
-const prismaClientModule = await import("../generated/prisma/client.js");
-const { Role: PrismaRole } = prismaClientModule;
+beforeAll(async () => {
+  const prismaModule = await import("../lib/db.js");
+  prisma = prismaModule.default;
 
-const { requireAuth, requireRole } = await import("../src/middleware/auth.js");
+  const prismaClientModule = await import("../generated/prisma/client.js");
+  PrismaRole = prismaClientModule.Role;
 
-/* =============================
-   Express test app
-   ============================= */
+  const authModule = await import("../src/middleware/auth.js");
+  requireAuth = authModule.requireAuth;
+  requireRole = authModule.requireRole;
+});
+
+function mockUserFindUnique(value: unknown) {
+  jest.spyOn(prisma.user, "findUnique").mockResolvedValue(value as never);
+}
+
 function createTestApp() {
   const app = express();
 
@@ -45,27 +40,29 @@ function createTestApp() {
     res.json({ ok: true });
   });
 
-  app.get("/student", requireAuth, requireRole(PrismaRole.STUDENT), (req, res) => {
-    res.json({ studentId: req.auth?.studentId ?? null });
-  });
+  app.get(
+    "/student",
+    requireAuth,
+    requireRole(PrismaRole.STUDENT),
+    (req: AuthenticatedRequest, res) => {
+      res.json({ studentId: req.auth?.studentId ?? null });
+    }
+  );
 
   return app;
 }
 
-/* =============================
-   Helper to mock a verified user
-   ============================= */
 function mockVerifiedFirebaseUser(role: Role, studentId?: string) {
   mockJwtVerify.mockResolvedValue({
     payload: {
       sub: "firebase-user-1",
       email: "student@example.com",
       role,
-      studentId: studentId || null
+      studentId: studentId ?? null
     }
   });
 
-  jest.spyOn(prisma.user, "findUnique").mockResolvedValue({
+  mockUserFindUnique({
     id: "app-user-1",
     email: "student@example.com",
     role,
@@ -73,13 +70,11 @@ function mockVerifiedFirebaseUser(role: Role, studentId?: string) {
   });
 }
 
-/* =============================
-   Tests
-   ============================= */
 describe("backend auth and authorization", () => {
   beforeEach(() => {
     process.env.FIREBASE_PROJECT_ID = "project-three-99cba";
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
   test("rejects requests without a bearer token", async () => {
@@ -110,7 +105,7 @@ describe("backend auth and authorization", () => {
       }
     });
 
-    jest.spyOn(prisma.user, "findUnique").mockResolvedValue(null);
+    mockUserFindUnique(null);
 
     const app = createTestApp();
     const response = await request(app)
