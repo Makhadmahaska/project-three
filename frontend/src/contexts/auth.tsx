@@ -1,11 +1,10 @@
 import {
-  createContext,
-  useContext,
   useEffect,
   useMemo,
   useState,
   type ReactNode
 } from "react";
+
 import {
   onAuthStateChanged,
   signOut,
@@ -13,15 +12,7 @@ import {
 } from "firebase/auth";
 
 import { auth } from "../firebase/firebase";
-
-type AuthContextValue = {
-  currentUser: User | null;
-  userLoggedIn: boolean;
-  loading: boolean;
-  signOutUser: () => Promise<void>;
-};
-
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+import { AuthContext, type AuthContextValue } from "./auth-context";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -51,14 +42,4 @@ export function AuthProvider({ children }: AuthProviderProps) {
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-
-  return context;
 }
