@@ -79,17 +79,17 @@ export default function Login() {
                 <span>Remember Me</span>
               </label>
 
-            <div className="login-actions">
-              <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Logging in..." : "Login"}
-              </button>
-              <a href="/">Forgot password?</a>
-            </div>
+              <div className="login-actions">
+                <button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Logging in..." : "Login"}
+                </button>
+                <a href="/">Forgot password?</a>
+              </div>
 
-            {error ? <p className="login-error">{error}</p> : null}
-          </form>
-        </section>
-      </div>
+              {error ? <p className="login-error">{error}</p> : null}
+            </form>
+          </section>
+        </div>
       </main>
 
       <footer className="wireframe-footer">

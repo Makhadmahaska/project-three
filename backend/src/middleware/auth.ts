@@ -1,6 +1,7 @@
+// /Users/makhadmahaska/Downloads/project-three-main 5/backend/src/middleware/auth.ts
 import type { NextFunction, Request, Response } from "express";
 import { createRemoteJWKSet, jwtVerify, type JWTPayload } from "jose";
-import type { Role } from "../../generated/prisma/client.js";
+import type { Role } from "@prisma/client";
 import prisma from "../../lib/db.js";
 
 export type AuthenticatedRequest = Request & {
