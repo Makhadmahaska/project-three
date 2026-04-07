@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import StudentDashboard from "./pages/StudentDashbaord";
 import AdminDashboard from "./pages/AdminDashboard";
-import Login from "./components/Login";
+import Login from "./components/login";
 import { useAuth } from "./contexts/auth";
 import { getSession, type AuthResponse } from "./services/api";
 
@@ -31,7 +31,7 @@ export default function App() {
       setError("");
 
       try {
-        const token = await currentUser.getIdToken();
+        const token = await currentUser.getIdToken(true);
         const nextSession = await getSession(token);
 
         if (!cancelled) {
@@ -72,6 +72,7 @@ export default function App() {
       </>
     );
   }
+
   if (session.user.role === "ADMIN") return <AdminDashboard token={session.token} />;
   return <StudentDashboard token={session.token} user={session.user} />;
 }

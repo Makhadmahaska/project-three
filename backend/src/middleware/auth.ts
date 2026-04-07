@@ -66,19 +66,26 @@ export async function requireAuth(
   }
 
   const token = authorizationHeader.slice("Bearer ".length);
+  let firebasePayload: JWTPayload;
 
   try {
-    const firebasePayload = await verifyFirebaseToken(token);
+    firebasePayload = await verifyFirebaseToken(token);
+  } catch {
+    return response.status(401).json({ message: "Invalid or expired token" });
+  }
+
+  try {
     request.auth = await buildFirebaseAuth(firebasePayload);
     return next();
-  } catch (firebaseError) {
-    const message =
-      firebaseError instanceof Error &&
-      firebaseError.message === "No application account found for this Firebase user"
-        ? firebaseError.message
-        : "Invalid or expired token";
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === "No application account found for this Firebase user"
+    ) {
+      return response.status(403).json({ message: error.message });
+    }
 
-    return response.status(message === "Invalid or expired token" ? 401 : 403).json({ message });
+    return next(error);
   }
 }
 
