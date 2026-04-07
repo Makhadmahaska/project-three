@@ -9,8 +9,6 @@
     "prisma:generate": "prisma generate",
     "start": "node dist/src/server.js",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config jest.config.js"
-
-
   },
   "keywords": [],
   "author": "",
@@ -23,6 +21,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "firebase-admin": "^13.7.0",
     "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.20.0",
