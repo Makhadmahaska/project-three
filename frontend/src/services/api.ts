@@ -37,6 +37,7 @@ export type SubjectOption = {
   id: string;
   name: string;
   code: string;
+  description?: string | null;
 };
 
 const authHeaders = (token: string) => ({
@@ -96,6 +97,24 @@ export const getStudents = async (token: string) => {
   return res.json();
 };
 
+export const createStudent = async (
+  token: string,
+  data: { firstName: string; lastName: string; email: string; password: string }
+) => {
+  const res = await fetch(`${API}/students`, {
+    method: "POST",
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({ message: "Failed to create student" }));
+    throw new Error(errorData.message ?? "Failed to create student");
+  }
+
+  return res.json();
+};
+
 export const updateStudent = async (
   token: string,
   studentId: string,
@@ -123,6 +142,24 @@ export const getSubjects = async (token: string): Promise<SubjectOption[]> => {
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({ message: "Failed to load subjects" }));
     throw new Error(errorData.message ?? "Failed to load subjects");
+  }
+
+  return res.json();
+};
+
+export const createSubject = async (
+  token: string,
+  data: { name: string; code: string; description?: string }
+): Promise<SubjectOption> => {
+  const res = await fetch(`${API}/subjects`, {
+    method: "POST",
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({ message: "Failed to create subject" }));
+    throw new Error(errorData.message ?? "Failed to create subject");
   }
 
   return res.json();

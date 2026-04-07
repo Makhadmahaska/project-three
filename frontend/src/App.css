@@ -343,6 +343,13 @@ a {
   padding: 0;
 }
 
+.admin-workspace {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
 .stack-fields {
   display: grid;
   gap: 14px;
@@ -470,5 +477,9 @@ a {
   .grades-table {
     display: block;
     overflow-x: auto;
+  }
+
+  .admin-workspace {
+    grid-template-columns: 1fr;
   }
 }
